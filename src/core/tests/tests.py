@@ -5,16 +5,26 @@ import pytest
 def test_products(client):
     response = client.post('/api/hs_codes_category/', {
         'category_name': 'animals',
+        'hs_code_category_id': "feb03e3e-5b7f-4abf-b100-d52a143150eb"
 
     })
     assert response.status_code == 201
+    category_id = response.json()['id']
+    response = client.post('/api/hs_codes_subcategory/', {
+            'hs_code_category_id': category_id,
+            'subcategory_name': 'dfgdfgdfgdfg'
+    })
+    assert response.status_code == 201
+    subcatid = response.json()['id']
+    response = client.post('/api/hs_codes/', {
+        'code': '23423',
+        'description': 'dfgfdgdfg',
+        'short_description': 'dfgdfggfdgf',
+        'hs_code_category_id': category_id,
+        'hs_code_subcategory': subcatid
+    })
 
-    # response = client.get('/api/hs_codes/')
-    # assert response.status_code == 200
-    # payload = response.json()
-    #
-    # assert payload[0].get('code') == '32456756'
-    # assert payload[0].get('description') == 'fdghfdgfdg'
-    # assert payload[0].get('short_description') == 'dfgdfgdfg'
-    # assert payload[0].get('category_name') == 'animals'
-    # assert payload[0].get('subcategory_name') == 'american animal'
+    assert response.status_code == 201
+
+
+
