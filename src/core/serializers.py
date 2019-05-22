@@ -48,6 +48,7 @@ class HSCodeListSerializer(ModelSerializer):
     class Meta:
         model = HSCode
         fields = [
+            'id',
             'code',
             'description',
             'short_description',
